@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import QrCode from "./components/qrReader/QrCode";
 import LoginScreen from "./screens/LoginScreen";
 import MyKids from "./components/MyKids";
+import Mapview from "./components/MapView";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,8 @@ const StackNavigator = () => {
         <Stack.Screen name="Contparinte" component={Contparinte} />
         <Stack.Screen name="Copil" component={LocationTest} />
         <Stack.Screen name="MyKids" component={MyKids} />
+        <Stack.Screen name="Mapview" component={Mapview} />
+
         <Stack.Screen
           options={{ headerShown: false }}
           name="Login"

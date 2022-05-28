@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 import "react-native-get-random-values";
@@ -41,12 +48,26 @@ let foregroundSubscription = null;
 
 export default function LocationTest() {
   const [position, setPosition] = useState(null);
-
+  const [coords, setCoords] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
   const [text, setText] = useState("Waiting..");
   const [uniqueId, setUniqueId] = useState(false);
+  const [long, setLong] = useState();
+  const [lat, setLat] = useState();
 
   // Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+  const handleSendCoords = () => {
+    const infoRef = doc(db, "locations", uniqueId);
+    const asf = async () => {
+      await setDoc(infoRef, {
+        loc: {
+          longitude: Number(lat),
+          latitude: Number(long),
+        },
+      });
+    };
+    asf();
+  };
   const startForegroundUpdate = async () => {
     alert("Tracking");
     const { granted } = await Location.getForegroundPermissionsAsync();
@@ -187,6 +208,26 @@ export default function LocationTest() {
           <Text style={styles.buttonText}>Stop tracking</Text>
         </TouchableOpacity>
       </View>
+      <TextInput
+        placeholder="Enter longitude here"
+        value={long}
+        onChangeText={(text) => {
+          setLong(text);
+        }}
+      />
+      <TextInput
+        placeholder="Enter latitude here"
+        value={lat}
+        onChangeText={(text) => {
+          setLat(text);
+        }}
+      />
+      <TouchableOpacity
+        onPress={handleSendCoords}
+        style={[styles.button, styles.buttonCoords]}
+      >
+        <Text style={styles.buttonText}>Send coords</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -207,7 +248,7 @@ const styles = StyleSheet.create({
     width: "60%",
     height: 70,
     marginBottom: 20,
-    height: 100,
+    height: 90,
     justifyContent: "center",
     padding: 12,
     borderRadius: 10,
@@ -217,5 +258,9 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 16,
+  },
+  buttonCoords: {
+    height: 60,
+    marginTop: 10,
   },
 });
