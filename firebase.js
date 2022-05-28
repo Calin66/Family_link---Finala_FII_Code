@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
-import QRCode from "react-native-qrcode-svg";
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import {
@@ -55,15 +54,15 @@ export function useAuth() {
   return currentUser;
 }
 //Storage
-export async function upload(file, currentUser, setLoading) {
-  const fileRef = ref(storage, currentUser.uid + ".png");
+// export async function upload(file, currentUser, setLoading) {
+//   const fileRef = ref(storage, currentUser.uid + ".png");
 
-  setLoading(true);
-  const snapshot = await uploadBytes(fileRef, file);
+//   setLoading(true);
+//   const snapshot = await uploadBytes(fileRef, file);
 
-  const photoURL = await getDownloadURL(fileRef);
+//   const photoURL = await getDownloadURL(fileRef);
 
-  updateProfile(currentUser, { photoURL });
-  setLoading(false);
-  alert("Upload complet - Refresh pagina pentru schimbari");
-}
+//   updateProfile(currentUser, { photoURL });
+//   setLoading(false);
+//   alert("Upload complet - Refresh pagina pentru schimbari");
+// }
